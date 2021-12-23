@@ -31,7 +31,7 @@ button02.grid(row = 1, column = 0)
 def show_frames():
    cv2image= cv2.cvtColor(cap.read()[1],cv2.COLOR_BGR2RGB)
    img = Image.fromarray(cv2image)
-   imgtk = ImageTk.PhotoImage(image = img)
+   imgtk = PhotoImage(image = img)
    label.imgtk = imgtk
    label.configure(image=imgtk)
    label.after(20, show_frames)
