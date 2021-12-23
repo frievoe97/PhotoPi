@@ -4,13 +4,13 @@ from PIL import Image, ImageTk
 import cv2
 
 # Create an instance of TKinter Window or frame
-win = Tk()
+window = Tk()
 
 # Set the size of the window
-win.geometry("700x350")
+window.geometry("700x350")
 
 # Create a Label to capture the Video frames
-label =Label(win)
+label =Label(window)
 label.grid(row=0, column=0)
 cap= cv2.VideoCapture(0)
 
@@ -24,4 +24,4 @@ def show_frames():
    label.after(20, show_frames)
 
 show_frames()
-win.mainloop()
+window.mainloop()
