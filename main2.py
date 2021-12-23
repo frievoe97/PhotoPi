@@ -9,9 +9,19 @@ window = Tk()
 # Set the size of the window
 window.geometry("700x350")
 
+
+pixel = PhotoImage(width = 1, height = 1)
+
+button01 = Button(window, text="Cheeese!", image = pixel, width = 100, height = 128, compound = "c")
+button01.grid(row = 0, column = 0)
+
+button02 = Button(window, text="Shutdown", image=pixel, width = 100, height = 128, compound = "c")
+button02.grid(row = 1, column = 0)
+
 # Create a Label to capture the Video frames
 label =Label(window)
-label.grid(row=0, column=0)
+label.config(width = 380, height = 288)
+label.grid(row = 0, column = 1, rowspan = 2)
 cap= cv2.VideoCapture(0)
 
 # Define function to show frame
