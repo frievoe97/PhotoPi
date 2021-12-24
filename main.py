@@ -36,7 +36,7 @@ def take_photo():
     window.poll = False
 
 def countdown(count):
-    label.configure(text = str(count))
+    label.configure(text = str(count), compound="center", font=("Courier", 110), fg="white")
     if count > 0:
         window.after(1000, countdown(count - 1))
     elif count == 0:
