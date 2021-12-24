@@ -8,6 +8,8 @@ import time
 
 #camera = PiCamera()
 
+countdowntime = None
+
 # Create an instance of TKinter Window or frame
 window = Tk()
 window.poll = True
@@ -22,18 +24,22 @@ window.wm_attributes('-type', 'splash')
 #root.after(DELAY_TIME, time_delay)
 
 def take_photo():
- 
-    countdown(3)
+    #countdown(3)
     return_value, image = cap.read()
     cv2.imwrite("imgae.png", image)
     window.poll = False
 
-def countdown(count):
-    label.configure(text = str(count), compound="center", font=("Courier", 110), fg="white")
-    if count > 0:
-        label.after(1000, countdown, count - 1)
-    elif count == 0:
-        label.configure(text = "")
+# def countdown(count):
+#     label.configure(text = str(count), compound="center", font=("Courier", 110), fg="white")
+#     if count > 0:
+#         label.after(1000, countdown, count - 1)
+#     elif count == 0:
+#         label.configure(text = "")
+
+def countdown():
+    global countdowntime
+    countdowntime = time.time()
+
 
 
 def take_new_photo():
@@ -75,6 +81,14 @@ def show_frames():
         img = Image.fromarray(cv2image)
         imgtk = ImageTk.PhotoImage(image = img)
         label.imgtk = imgtk
+        if countdowntime is not None:
+            if countdowntime + 1 > time.time():
+                label.configure(image=imgtk,text = 3, compound="center", font=("Courier", 110), fg="white")
+            elif countdowntime + 2 > time.time():
+                label.configure(image=imgtk,text = 2, compound="center", font=("Courier", 110), fg="white")
+            elif countdowntime + 3 > time.time():
+                label.configure(image=imgtk,text = 1, compound="center", font=("Courier", 110), fg="white")
+                take_photo()
         label.configure(image=imgtk, text = "")
         label.after(20, show_frames)
     else:
