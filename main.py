@@ -12,6 +12,8 @@ import time
 window = Tk()
 window.poll = True
 
+print(time.time())
+
 # Set the size of the window
 window.geometry("700x350")
 window.wm_attributes('-type', 'splash')
@@ -20,16 +22,7 @@ window.wm_attributes('-type', 'splash')
 #root.after(DELAY_TIME, time_delay)
 
 def take_photo():
-    #label.configure(text = "3", compound = "center", font = ("Courier", 110), fg = "white")
-    #window.after(DELAY_TIME, time_delay)
-    #label.after(1000, label.configure(text = "4", compound = "center", font = ("Courier", 110), fg = "white"))
-    #label.after(1000, label.configure(text = "3", compound = "center", font = ("Courier", 110), fg = "white"))
-    #label.after(1000, label.configure(text = "2", compound = "center", font = ("Courier", 110), fg = "white"))
-    #label.after(1000, label.configure(text = "1", compound = "center", font = ("Courier", 110), fg = "white"))
-    #label.configure(text = "2", compound = "center", font = ("Courier", 110), fg = "white")
-    #time.sleep(1)
-    #label.after(1000, print("2"))
-    #label.configure(text = "1", compound = "center", font = ("Courier", 110), fg = "white")
+ 
     countdown(3)
     return_value, image = cap.read()
     cv2.imwrite("imgae.png", image)
@@ -38,7 +31,7 @@ def take_photo():
 def countdown(count):
     label.configure(text = str(count), compound="center", font=("Courier", 110), fg="white")
     if count > 0:
-        window.after(1000, countdown(count - 1))
+        label.after(1000, countdown, count - 1)
     elif count == 0:
         label.configure(text = "")
 
