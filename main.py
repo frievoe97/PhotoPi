@@ -2,6 +2,8 @@
 from tkinter import *
 from PIL import Image, ImageTk
 import cv2
+import os
+import time
 #from picamera import PiCamera
 
 #camera = PiCamera()
@@ -14,7 +16,17 @@ window.poll = True
 window.geometry("700x350")
 window.wm_attributes('-type', 'splash')
 
+#DELAY_TIME = 100 # Millisekunden
+#root.after(DELAY_TIME, time_delay)
+
 def take_photo():
+    #label.configure(text = "3", compound = "center", font = ("Courier", 110), fg = "white")
+    #window.after(DELAY_TIME, time_delay)
+    label.after(1000, label.configure(text = "3", compound = "center", font = ("Courier", 110), fg = "white"))
+    #label.configure(text = "2", compound = "center", font = ("Courier", 110), fg = "white")
+    #time.sleep(1)
+    label.after(1000, print("2"))
+    label.configure(text = "1", compound = "center", font = ("Courier", 110), fg = "white")
     return_value, image = cap.read()
     cv2.imwrite("imgae.png", image)
     window.poll = False
@@ -28,6 +40,7 @@ def print_photo():
 
 def shutdown():
     window.destroy()
+    #os.system("sudo shutdown -h now")
 
 
 pixel = PhotoImage(width = 1, height = 1)
@@ -57,7 +70,7 @@ def show_frames():
         img = Image.fromarray(cv2image)
         imgtk = ImageTk.PhotoImage(image = img)
         label.imgtk = imgtk
-        label.configure(image=imgtk)
+        label.configure(image=imgtk, text = "")
         label.after(20, show_frames)
     else:
         photo = cv2.imread("image.png")
