@@ -4,9 +4,6 @@ from PIL import Image, ImageTk
 import cv2
 import os
 import time
-#from picamera import PiCamera
-
-#camera = PiCamera()
 
 countdowntime = None
 
@@ -14,27 +11,23 @@ countdowntime = None
 window = Tk()
 window.poll = True
 
-print(time.time())
-
 # Set the size of the window
 window.geometry("700x350")
 window.wm_attributes('-type', 'splash')
 
-#DELAY_TIME = 100 # Millisekunden
-#root.after(DELAY_TIME, time_delay)
-
 def take_photo():
     #countdown(3)
-    return_value, image = cap.read()
-    cv2.imwrite("imgae.png", image)
-    window.poll = False
+    return_value, imageTk = cap.read()
+    cv2.imwrite("image.png", imageTk)
+    #imageTemp = cv2.imread("image.png")
+    #label.configure(image = imageTemp)
 
-# def countdown(count):
-#     label.configure(text = str(count), compound="center", font=("Courier", 110), fg="white")
-#     if count > 0:
-#         label.after(1000, countdown, count - 1)
-#     elif count == 0:
-#         label.configure(text = "")
+    #image = Image.open("image.png")
+    #photo = ImageTk.PhotoImage(image)
+    label.configure(fg = "green")
+
+
+    window.poll = False
 
 def countdown():
     global countdowntime
@@ -60,7 +53,7 @@ pixel = PhotoImage(width = 1, height = 1)
 
 show_live_photo = True
 
-button01 = Button(window, text="Cheeese!", image = pixel, width = 100, height = 147, compound = "c", command = take_photo, bg = "white", fg = "black", bd = 0, activebackground = "white", activeforeground = "black")
+button01 = Button(window, text="Cheeese!", image = pixel, width = 100, height = 147, compound = "c", command = countdown, bg = "white", fg = "black", bd = 0, activebackground = "white", activeforeground = "black")
 button01.grid(row = 0, column = 0)
 
 button02 = Button(window, text="Shutdown", image=pixel, width = 100, height = 146, compound = "c", bg = "white", fg = "black", bd = 0, activebackground = "white", activeforeground = "black")
@@ -74,8 +67,10 @@ cap= cv2.VideoCapture(0)
 
 # Define function to show frame
 def show_frames():
+    global countdowntime
+    print(countdowntime, window.poll)
     if window.poll:
-        button01.configure(text = "Cheeese!", command = take_photo, bg = "white", fg = "black")
+        button01.configure(text = "Cheeese!", command = countdown, bg = "white", fg = "black")
         button02.configure(text = "Shutdown", bg = "white", fg = "black", command = shutdown)
         cv2image= cv2.cvtColor(cap.read()[1],cv2.COLOR_BGR2RGB)
         img = Image.fromarray(cv2image)
@@ -84,18 +79,27 @@ def show_frames():
         if countdowntime is not None:
             if countdowntime + 1 > time.time():
                 label.configure(image=imgtk,text = 3, compound="center", font=("Courier", 110), fg="white")
+                print("3")
             elif countdowntime + 2 > time.time():
                 label.configure(image=imgtk,text = 2, compound="center", font=("Courier", 110), fg="white")
+                print("2")
             elif countdowntime + 3 > time.time():
                 label.configure(image=imgtk,text = 1, compound="center", font=("Courier", 110), fg="white")
+                print("1")
+            elif countdowntime + 4 > time.time():
+                countdowntime = None
                 take_photo()
-        label.configure(image=imgtk, text = "")
+                label.after(20, show_frames)
+        else:
+            label.configure(image=imgtk, text = "")
+
         label.after(20, show_frames)
     else:
-        photo = cv2.imread("image.png")
-        label.configure(image = photo)
+        #photo = cv2.imread("image.png")
+        #label.configure(image = photo, text = "Result")
         button01.configure(text = "Print", command = print_photo, bg = "white", fg = "black")
         button02.configure(text = "Take new Photo", command = take_new_photo, bg = "white", fg = "black")
+        #label.after(20, show_frames)
 
 
 show_frames()
